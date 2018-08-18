@@ -1,5 +1,372 @@
 Str - count, find, replace, len, isupper, islower
+
 list - negative index, append, insert, extend, remove, pop, reverse, sort, sorted, sort(reverse=True),
         index, 
 
 number list - min, max, sum
+
+functions - An executed function is equal to the return value.  
+            When we simply call a function that returns some value,we won't be able to see output.
+            To see the output of a function that returns some value, we have to print the function
+            calling statement, such as "print(test())".
+            When an executed function returns some value,we can use different built-in methods to
+            work with the returned data. For example, "print(max(test()))".
+          - Passing default values to function arguments and overriding the default arg values
+          - Positional and Keyword arguments (*arg,**kwarg)
+            *args - Positional argumnts are the args without any default values. so when we invoke 
+            the function, we must pass values. *arg allows us to pass any number of args/values to
+            our function.
+            **kwargs - Keyword arguments are the ones with default values. We can pass any many
+            keyword arguments we want to our function.
+            It's not mandatory to have *arg,**kwarg for arg names. It can be anything like,
+            *student,**marks. The prfix * or ** is what matters.
+
+            Example: 1
+            def test(*args,**kwargs):
+                print("Here the positional arguments are: ",args)
+                print("Here the keyword arguments are: ", kwargs)
+            test('Anand',28,'Chennai')
+
+            O/P:
+            Here the positional arguments are:  Anand 28 Chennai
+            Here the keyword arguments are:
+
+            Example: 2
+            
+            def test(*args,**kwargs):
+                print("Here the positional arguments are: ",args)
+                print("Here the keyword arguments are: ", kwargs)
+            test('Anand',28,'Chennai',Maths=100, Tamil=100)
+
+            O/P:
+            Here the positional arguments are:  ('Anand', 28, 'Chennai')
+            Here the keyword arguments are:  {'Maths': 100, 'Tamil': 100}
+
+
+          - We can see the positional arguments returned a tuple as output and keyword arguments 
+            returned a dictionary as output.
+
+          - One important thing to remeber is that we must complete passing the positional args first
+            and then keyword args. Can't provide a mixture of arg values such as,
+            test('Anand',28,'Chennai',Maths=100, Tamil=100,'TN')
+            It will throw an error: "positional argument follows keyword argument"
+
+          - When we pass variables as arguments in fucntion invoking for positional and keyword args, 
+            we must be careful.
+            Wrong way:
+            def test(*stu,**details):
+                print("Here the positional arguments are: ",stu)
+                print("Here the keyword arguments are: ", details)
+                student=['Anand',28,'Chennai']
+                det= {'Maths': 100, 'Tamil': 100}
+            test(student,det)
+
+            O/P:
+            Here the positional arguments are:  (['Anand', 28, 'Chennai'], {'Maths': 100, 'Tamil': 100})
+            Here the keyword arguments are:  {}
+
+            We can see that the function took both variables as positional arguments.
+
+            Right way:
+            test(*student,**det)
+
+            O/P:
+            Here the positional arguments are:  ('Anand', 28, 'Chennai')
+            Here the keyword arguments are:  {'Maths': 100, 'Tamil': 100}
+
+            
+Importing modules - When we import an module, we can import the entire module by specifying
+                    "import module_name" , which will allow us to access every functions, variables
+                    and statements from that module.
+                    If we want to explicitly access only functions or variables within that module,
+                    we can specify that as "from module_name import function" or
+                    "from module_name import function as f,variable as v" with nicknames or
+                    we can use "from module_name import *" which is similar to "import module_name"
+                  - Whenever we import a module, python finds the module in the background by
+                    going through a list of directories/paths, starting with our cwd. To see what
+                    paths it checks, we can import the sys module and use sys.path to list out the
+                    paths python searches for the module.
+                  - If the module is not found in any of the default directories, it will throw a 
+                    "ModuleNotFound" error. In this case we can explicitly define the path of our
+                    module using the sys module and "sys.path.append('C:/Users/Admin/Desktop')" before we import
+                    the module.
+                  - If we have a different dir/path that has our modules, we can add it to the
+                    python's default paths by adding an environment variable in settings.
+                    Ex - PYTHONPATH - C:/Users/Admin/Desktop/SearchModule
+                    Now,everytime we import a module, python will look for that module in the newly
+                    added default path, along with other paths.
+
+
+Random module - random.random() - It will output a random floating number between 0 to 1.
+                random.randint(a,b) - It will output a random integer number between a and b, 
+                                      including a and b.
+                random.choice(a) - It takes a list as an argument and output random values from
+                                   that list.
+
+Math module - math.radians(x) - Converts angle x from degrees to radians
+              math.sin(), math.cos(), math.tan()
+
+Datetime module - datetime.datetime(2018,8,2) - 2018-08-02 00:00:00
+                  datetime.datetime.today() - 2018-08-11 16:53:46.830487
+                  datetime.datetime.now() - 2018-08-11 16:54:58.071950
+
+Calendar module - calendar.isleap(2018) - False
+                  calendar.isleap(2020) - True
+
+OS module - os.getcwd() - To return the current working directory
+          - os.path.isdir('git') - To check whether there is a directory with the name git
+          - os.path.isfile('test.py') - To check if there is a file with the name test.py
+          - os.__file__   - This will return the file location/path of OS module - os.py
+          - random.__file__  - Same as above, but it will return the path of random module
+          - os.chdir('C:/Users/Admin/Desktop') - To navigate/change the cwd
+          - os.listdir() - It will list the files and folders in the cwd. 
+            We can specify a path too, such as os.listdir('C:/Codes')
+          - os.mkdir('Test') - To create a directory. With mkdir, we can create only one directory
+          - os.makedirs('Testfolder/Test1/Test2/Test3') - With makedirs, we can create nested dirs
+          - os.rmdir('Test') - To remove a single directory that does not have any sub directories
+            If it has sub dirs, then first we should delete the sub dirs "os.rmdir('Test/Test1').
+            This will delete the Test1 dir. Then we have to delete Test dir.
+          - os.removedirs('Testfolder/Test1/Test2/Test3') - Removedirs will delete all parent and
+            child directories at one go.
+          - os.rename('file/dir','file/dir'), - To rename files and directories
+          - os.stat('style.css') - To know details about a file or dir. It will output many stats.
+            We can also explicitly mention the stat to see the specific output.
+            "os.stat('style.css').st_size" - To see the file size
+            "os.stat('Files').st_mtime" - To see last modified time. O/P - 1533716640.870916
+            This time output is not human readable. So, we can use the datetime module to Converts
+            it to a human readable date and time.
+            
+            mtime=os.stat('style.css).st_mtime
+            print(datetime.fromtimestamp(mtime))
+
+            O/P: 2018-08-08 13:54:00.870916
+          - os.walk() - This is a generator which will display the dir path, dir names within 
+            that path and file names within that dir. It will walk through all paths/dirs/files
+            until the entire tree is completed. 
+
+            for mypath,mydir,myfiles in os.walk(os.getcwd()):
+              print("Current path: ",mypath)
+              print("Current Dir: ",mydir)
+              print("Files: ",myfiles)
+              print()
+          
+          - os.environ - To list all the environment variables in our system
+
+          - os.environ.get('USERPROFILE')- To view the value of a particular environment variable
+            O/P: C:\Users\Admin
+
+            os.environ.get('PYTHONPATH')
+            O/P: C:\Users\Admin\Desktop\SearchModule
+          
+          - os.path.join(a,b,c,...) - When we want to create a file in our desired dir, it's 
+            recommended to use the os.path.join() method. For example, if we do the following way
+            create a file in the path, the output will be wrong.
+            
+            WRONG WAY:
+            file_path=os.environ.get('PYTHONPATH')+'test.txt'
+            O/P: C:\Users\Admin\Desktop\SearchModuletest.txt
+
+            See, there is no \ between the 'SearchModule' folder and test.txt file.
+
+            RIGHT WAY:
+            file_path=os.path.join(os.environ.get('PYTHONPATH'),'test.txt')
+            print(file_path)
+
+            O/P: C:\Users\Admin\Desktop\SearchModule\test.txt
+
+            Then, we can also use that file_path to create the file in the dir we joined it with.
+
+            "with open(file_path,"w") as f:"
+          
+          - os.path.basename('C:/Users/Admin/Desktop/SearchModule/test.txt') - basename will
+            the last item in the path AFTER /
+            O/P: test.txt
+
+            os.path.basename(C:/Users/Admin/Desktop/SearchModule)
+            O/P: SearchModule
+
+            os.path.basename(C:/Users/Admin/Desktop/)
+            O/P:  (none) - because there is a / in the path but nothing after that
+
+          - os.path.dirname('C:/Users/Admin/Desktop/SearchModule/test.txt') - dirname will return
+            the dir/path BEFORE /
+            O/P: C:/Users/Admin/Desktop/SearchModule
+
+            os.path.dirname('C:/Users/Admin/Desktop/SearchModule/')
+            O/P: C:/Users/Admin/Desktop/SearchModule
+
+            os.path.dirname('C:/Users/Admin/Desktop/SearchModule')
+            O/P: C:/Users/Admin/Desktop
+
+          - os.path.split('C:/Users/Admin/Desktop/SearchModule/test.txt') - This will split the 
+            content before and after the last / and output the result as a tuple.
+            O/P: ('C:/Users/Admin/Desktop/SearchModule', 'test.txt')
+
+            os.path.split('C:/Users/Admin/Desktop/SearchModule/')
+            O/P: ('C:/Users/Admin/Desktop/SearchModule', '')
+
+            os.path.split('C:/Users/Admin/Desktop/SearchModule')
+            O/P: ('C:/Users/Admin/Desktop', 'SearchModule')
+
+          - os.path.exists('C:/Users/Admin/Desktop/SearchModule') - checks if the path exist or not
+            Returns True or False accordingly.
+
+          - os.path.isdir(path) - It will check whether the given input is a dir or not
+
+          - os.path.isfile(path) - It will check whether the given input is a file or not
+
+          - os.path.splitext('Desktop/SearchModule/test.txt') - Split EXT - Split extention.
+            It will split the dir with filename as one item and extension as another item and 
+            output it as a tuple.
+            O/P: ('Desktop/SearchModule/test', '.txt')
+
+          - dir(os.path) - To see all modules that are available for os.path
+
+
+string.zfill(x) - This method is used to add padding zeros to the left. x refers to the number of 
+                  digits we want.
+
+                  test="8"
+                  print(test.zfill(2))
+                  print(test.zfill(5))
+
+                  O/P:
+                  08
+                  00008
+
+                  test="test"
+                  print(test.zfill(2))
+                  print(test.zfill(5))
+                  print(test.zfill(10))
+
+                  O/P:
+                  test
+                  0test
+                  000000test
+
+
+CSV Modle - csv.reader(csvfile) - This reader method has a dialect in the background which is expecting 
+            comma seperated values in the data.
+            We have to iterate over the reader variable to see the output, as shown below.
+
+            import csv
+            with open("sample.csv") as csvfile:
+                csv_reader=csv.reader(csvfile)
+                for i in csv_reader:
+                    print(i)
+
+            O/P:
+            ['first_name', 'last_name', 'email']
+            ['Anand', 'Kumar', 'anandkumarg890@gmail.com']
+            ['Shiva', 'Kishore', 'shiva@gmail.com']
+
+            We can see the ouput is in the list format with the comma seperated values.
+
+            To see only the emails, we can use indexing.
+
+            import csv
+            with open("sample.csv") as csvfile:
+                csv_reader=csv.reader(csvfile)
+                for i in csv_reader:
+                    print(i[2])
+
+            O/P:
+            email
+            anandkumarg890@gmail.com
+            shiva@gmail.com
+
+      next - is a keyword/generator which can be used to skip over values and iterables.
+
+             import csv
+             with open("sample.csv") as csvfile:
+                  csv_reader=csv.reader(csvfile)
+                  next(csv_reader)
+                  for i in csv_reader:
+                      print(i)
+            
+              O/P:
+              ['Anand', 'Kumar', 'anandkumarg890@gmail.com']
+              ['Shiva', 'Kishore', 'shiva@gmail.com']
+            
+            We can see it skipped the inital header list, since we used the next function.
+      
+      delimiters - When we read or write from a csv file, we can specify how we want our data to be parsed
+                   using delimiters.
+
+                   with open("sample1.csv") as rfile:
+                      csv_reader=csv.reader(rfile,delimiter='-')
+                      for l in csv_reader:
+                          print(l)
+                   
+                   Same way, delimeters can be used when we write/append a csv file too. The following Codes
+                   shows how we can do that, along with how we can copy data from one csv file to another.
+
+                   with open("sample.csv") as rfile:
+                      csv_reader=csv.reader(rfile)
+                      with open("sample1.csv","w",newline='') as wfile:
+                          csv_writer=csv.writer(wfile,delimiter='-')
+                          for lines in csv_reader:
+                              csv_writer.writerow(lines)
+
+      csv.DictReader(csv_file) - This method will take a csv file as an argument and return the output
+                                in dictionary format. It won't output the header values, as they are
+                                considered rto be the keys for the dictionary values.
+
+                                import csv
+                                with open("sample.csv") as rfile:
+                                    csv_reader=csv.DictReader(rfile)
+                                    for l in csv_reader:
+                                        print(l)
+                                
+                                O/P:
+                                OrderedDict([('first_name', 'Anand'), ('last_name', 'Kumar'), ('email', 'anandkumarg890@gmail.com')])
+                                OrderedDict([('first_name', 'Shiva'), ('last_name', 'Kishore'), ('email', 'shiva@gmail.com')])
+
+                                To retrieve data with key names,
+
+                                import csv
+                                with open("sample.csv") as rfile:
+                                    csv_reader=csv.DictReader(rfile)
+                                    for l in csv_reader:
+                                        print(l['email'])
+
+                                O/P:
+                                anandkumarg890@gmail.com
+                                shiva@gmail.com
+
+
+                                This is better than regular csv.reader() because we don't always know
+                                the indexing of our values. With csv.DictReader() or writer, we can use
+                                keys to get values.
+
+                                To copy one csv file to another using dictionary method in csv,
+
+                                import csv
+                                with open("sample.csv") as rf:
+                                    csv_reader=csv.DictReader(rf)
+                                    with open("sample1.csv","w") as wf:
+                                        csv_header=['fname', 'lname','email']
+                                        csv_writer=csv.DictWriter(wf,fieldnames=csv_header,delimiter='-')
+                                        csv_writer.writeheader()
+                                        for lines in csv_reader:
+                                            csv_writer.writerow(lines)
+
+When we copy data from one csv file to another csv file, we can decide what fields we want to copy.
+We can remove/eliminate the fields we don't want to write to our new csv file.
+
+import csv
+with open("sample.csv") as rf:
+    csv_reader=csv.DictReader(rf)
+    with open("sample1.csv","w") as wf:
+        csv_header=['fname', 'lname']
+        csv_writer=csv.DictWriter(wf,fieldnames=csv_header,delimiter=',')
+        csv_writer.writeheader()
+        for lines in csv_reader:
+            del lines['email']
+            csv_writer.writerow(lines)
+
+The above code will write only first and last names to the new csv file. It won't copy email as we
+deleted email during each iteration.
+
+
+

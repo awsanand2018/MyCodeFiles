@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import csv
 import os
 name_list = ["Anand", "Karthik", "Suresh", "Dilip", "Paul"]
