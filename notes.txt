@@ -369,4 +369,280 @@ The above code will write only first and last names to the new csv file. It won'
 deleted email during each iteration.
 
 
+DateTime Module - Naive dates and times don't have enough information to determine timezones or
+day light saving times. It can be used for high-level things.
+
+datetime.date(yyyy,m,d) - In this method, we should always give m,d in single digits without 
+preceding 0.
+
+import datetime
+d=datetime.date(2018,8,19)
+print(d)
+
+O/P:
+2018-08-19
+
+We can see that it added a 0 in left padding for month.
+
+d=datetime.date(2018,08,19)
+d=datetime.date(2018,8,09)
+
+These 2 will return an error.
+
+datetime.date.today() - This method will retun current date.
+
+We can also extract lot more details from the date as follows.
+
+import datetime
+d=datetime.date.today()
+print(d)
+print(d.year)
+print(d.month)
+print(d.day)
+print(d.weekday())  # Monday 0 Sunday 6
+print(d.isoweekday())   # Monday 1 Sunday 7
+
+O/P:
+2018-08-19
+2018
+8
+19
+6
+7
+
+datetime.timedelta() - It is simply the difference between two dates or times.
+
+import datetime
+tday=datetime.date.today()
+tdelta=datetime.timedelta(days=17)
+print(tday)
+print(tday+tdelta)
+
+O/P:
+2018-08-19
+2018-09-05
+
+If ww add or subtract date from timedelta, we get another date. If we add or subtract two days, we get
+timedelta.
+
+import datetime
+tday=datetime.date.today()
+bday=datetime.date(2019,8,2)
+tdelta=bday-tday
+print(tdelta)
+
+O/P:
+348 days, 0:00:00
+
+We can also extract data from timedelta as follows.
+
+import datetime
+tday=datetime.date.today()
+bday=datetime.date(2019,8,2)
+tdelta=bday-tday
+print("Number of days till my next birth day is ",tdelta.days)
+
+O/P:
+Number of days till my next birth day is  348
+
+import datetime
+tday=datetime.date.today()
+bday=datetime.date(2019,8,2)
+tdelta=bday-tday
+print("Number of seconds till my next birth day is ",tdelta.total_seconds())
+
+O/P:
+Number of days till my next birth day is  30067200.0
+
+datetime.time() - This module allows us to have access only to hours,minutes,seconds and microseconds.
+This module will not have access to year, month and day. For year, month and day, we have to use
+datetime.date() module.
+
+import datetime
+d=datetime.time(12,57,23,236484)
+print(d)
+
+O/P:
+12:57:23.236484
+
+datetime.datetime() - This module has access to both datetime.date() and datetime.time(), which 
+means, we can access year, month, day, hour, minutes seconds and microseconds all together with this module.
+
+import datetime
+d=datetime.datetime(2018,8,19,11,51,55,343543)
+print(d)
+
+O/P:
+2018-08-19 11:51:55.343543
+
+With the datetime.datetime() module, we can also extract the date and time seperately.
+
+import datetime
+dt=datetime.datetime(2018,8,19,11,51,55,343543)
+print(dt.date())
+print(dt.time())
+print(dt.year)
+
+O/P:
+2018-08-19
+11:51:55.343543
+2018
+
+We can also use timedelta with datetime.datetime() module.
+
+import datetime
+dt=datetime.datetime(2018,8,19,11,51,55,343543)
+tdelta=datetime.timedelta(days=10)
+print(dt+tdelta)
+
+O/P:
+2018-08-29 11:51:55.343543
+
+Unlike datetim.date() module, with datetime.datetim() module, we can use timedelta to add/subtract
+hours too.
+
+import datetime
+dt=datetime.datetime(2018,8,19,11,51,55,343543)
+tdelta=datetime.timedelta(hours=10)
+tdelta1=datetime.timedelta(minutes=10)
+print(dt+tdelta)
+print(dt+tdelta1)
+
+O/P:
+2018-08-19 21:51:55.343543
+2018-08-19 12:01:55.343543
+
+In the following code, we can see three differnt methods of datetime.datetime() module.
+
+import datetime
+print(datetime.datetime.today())    # Returns current local date time with timezone of none
+print(datetime.datetime.now())      # We can pass in timezone attributes to now() method. Leaving timezone empty will yield same output as today()
+print(datetime.datetime.utcnow())   # Provides current UTC time, but timezone is not set
+
+O/P:
+2018-08-19 12:05:45.473871
+2018-08-19 12:05:45.473870
+2018-08-19 06:35:45.473870
+
+
+pytz package - We can install and use pytz package to work with timezones. It's officially recommended
+by Python too.
+
+It's recommended to use UTC timezones with pytz module.
+
+import datetime as dt
+import pytz
+mydt=dt.datetime(2018,8,19,12,39,23, tzinfo=pytz.UTC)
+print(mydt)
+
+O/P:
+2018-08-19 12:39:23+00:00
+
+In the output, we can see +00:00 which is the UTC timezone offset.
+
+As mentioned before, we can use timezones only with datetime.datetime.now() and datetime.datetime.utcnow().
+We cannot use timezones with datetime.datetime.today() method. The following code is an example for that.
+
+import datetime as dt
+import pytz
+mydt=dt.datetime.now(tz=pytz.UTC) # Better option
+mydt1=dt.datetime.utcnow().replace(tzinfo=pytz.UTC) # Extra coding. So suggested to use the above code line.
+print(mydt)
+print(mydt1)
+
+O/P:
+2018-08-19 07:13:20.229129+00:00
+2018-08-19 07:13:20.229141+00:00
+
+To convert UTC timezone to another timezone, we can use the astimezone(pytz.timezone('zone')) method.
+
+import datetime as dt
+import pytz
+mydt=dt.datetime.now(tz=pytz.UTC)
+ustime=mydt.astimezone(pytz.timezone('US/Central'))
+mytime=mydt.astimezone(pytz.timezone('Asia/Kolkata'))
+print(mydt)
+print(ustime)
+print(mytime)
+
+O/P:
+2018-08-19 07:20:41.822282+00:00
+2018-08-19 02:20:41.822282-05:00
+2018-08-19 12:50:41.822282+05:30
+
+To see all timezones offered by pytz module, we can run the code below.
+
+for tz in pytz.all_timezones:
+  print(tz)
+
+ISO timezone format - We can also convert our date and time to isoformat, which is international standard.
+
+import datetime as dt
+import pytz
+mydt=dt.datetime.now(tz=pytz.UTC)
+est=mydt.astimezone(pytz.timezone('US/Eastern'))
+print(mydt)
+print(est)
+print(est.isoformat())
+
+O/P:
+2018-08-19 07:37:36.546383+00:00
+2018-08-19 03:37:36.546383-04:00
+2018-08-19T03:37:36.546383-04:00
+
+strftime(format) - String Format Time. This method can be used to format our date and time in the way we want. 
+This method also converts the date into a string.
+
+import datetime as dt
+import pytz
+mydt=dt.datetime.now(tz=pytz.UTC)
+est=mydt.astimezone(pytz.timezone('US/Eastern'))
+print(est)
+print(est.strftime('%b %d, %Y'))
+print(est.strftime('%B %d, %Y'))
+print(est.strftime('%B %d, %y'))
+
+O/P:
+2018-08-19 03:42:51.342224-04:00
+Aug 19, 2018
+August 19, 2018
+August 19, 18
+
+
+strptime() - String Parse Time. To convert string to date/time format. Opposite of strftime() method.
+
+import datetime as dt
+import pytz
+mydt=dt.datetime.now(tz=pytz.UTC)
+est=mydt.astimezone(pytz.timezone('US/Eastern'))
+date_string='August 19, 2018'
+new_date=dt.datetime.strptime(date_string,'%B %d, %Y')
+print(new_date)
+
+O/P:
+2018-08-19 00:00:00
+
+
+The following code provides a detailed explanation of strftime() and strptime() methods.
+
+import datetime 
+import pytz
+mydt=datetime.datetime.now(tz=pytz.UTC) # To convert it into UTC timezone
+print(mydt)
+est_time=mydt.astimezone(pytz.timezone('US/Eastern'))
+print(est_time)
+date_to_string=est_time.strftime('%B %d, %Y') # String Format Time. Converts date/time into string. The output is a string now.
+print(date_to_string)
+string_to_date=datetime.datetime.strptime(date_to_string,'%B %d, %Y') # String Parse Time.This method takes two args. One arg is the string that contains date as string and another arg is the format. This method converts the string to date/time format.
+print(string_to_date)
+print(string_to_date.date()) # To extract only the date from the output
+
+O/P:
+2018-08-19 08:00:43.344953+00:00
+2018-08-19 04:00:43.344953-04:00
+August 19, 2018
+2018-08-19 00:00:00
+2018-08-19
+
+
 
