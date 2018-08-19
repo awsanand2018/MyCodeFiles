@@ -245,7 +245,7 @@ string.zfill(x) - This method is used to add padding zeros to the left. x refers
                   000000test
 
 
-CSV Modle - csv.reader(csvfile) - This reader method has a dialect in the background which is expecting 
+CSV Module - csv.reader(csvfile) - This reader method has a dialect in the background which is expecting 
             comma seperated values in the data.
             We have to iterate over the reader variable to see the output, as shown below.
 
@@ -359,7 +359,7 @@ with open("sample.csv") as rf:
     csv_reader=csv.DictReader(rf)
     with open("sample1.csv","w") as wf:
         csv_header=['fname', 'lname']
-        csv_writer=csv.DictWriter(wf,fieldnames=csv_header,delimiter=',')
+        csv_writer=csv.DictWriter(wf,fieldnames=csv_header,delimiter='\t')
         csv_writer.writeheader()
         for lines in csv_reader:
             del lines['email']
@@ -367,6 +367,7 @@ with open("sample.csv") as rf:
 
 The above code will write only first and last names to the new csv file. It won't copy email as we
 deleted email during each iteration.
+
 
 
 DateTime Module - Naive dates and times don't have enough information to determine timezones or
@@ -643,6 +644,5 @@ O/P:
 August 19, 2018
 2018-08-19 00:00:00
 2018-08-19
-
 
 
