@@ -646,3 +646,675 @@ August 19, 2018
 2018-08-19
 
 
+LEGB - The arguments we pass to a function is also local variables and it's scope is within that
+function. The following code will work fine.
+
+def test(z):
+    x='local x'
+    print(z)
+    print(x)
+test('Another local variable z')
+
+O/P:
+Another local variable z
+local x
+
+But, if we try to refer the local variables z and x outside of the function, it will throw an error.
+
+def test(z):
+    x='local x'
+    print(z)
+    print(x)
+test('Another local variable z')
+print(z)
+print(x)
+
+O/P:
+Another local variable z
+local x
+NameError: name 'z' is not defined
+
+
+Enclosed - Let's say we have nested functions or nested blocka of codee. Within that nested code,
+we may use the same variable name multiple times. But each time when a variable is refered, Python
+will follow the LEGB order to find the value of the variable,
+
+def outer():
+    x='outer x'     # local variable to outer function
+    def inner():
+        x='inner x' # local variable to inner function
+        print(x)
+    inner()
+    print(x)
+outer()
+
+O/P:
+inner x
+outer x
+
+We can see that the above code printed out the local variables of both inner and outer function respectively.
+
+def outer():
+    x='outer x'     # local variable to outer function
+    def inner():
+        
+        print(x)    
+    inner()
+    print(x)
+outer()
+
+O/P:
+outer x
+outer x
+
+In the above code, inner function does not have a local variable x. So by LEGB order, it printed out
+the enclosed variable x value.
+
+def outer():    
+    def inner():
+        x='inner x' # local variable to inner function
+        print(x)
+    inner()
+    print(x)
+outer()
+
+O/P:
+inner x
+NameError: name 'x' is not defined
+
+The above code returned an error, because within the inner function, it had a local variable x. 
+So it printed that out. Within outer function, we don't have any local, enclosed, global or built-in
+variable with the variable name x.
+
+Note: Enclosed rule will search for variables from within to outer order of nested code, not vice versa.
+
+
+Just like how we can use the 'global' keyword to overwrite the value of global variable within
+nested codes, we can use the keyword 'nonlocal' to overwrite the value of enclosed variable.
+
+def outer():
+    x='outer x'     # local variable to outer function
+    def inner():
+        nonlocal x  # We are refering the enclosed variable here
+        x='inner x' # It overwrites the value of enclosed variable x
+        print(x)
+    inner()
+    print(x)
+outer()
+
+O/P;
+inner x
+inner x
+
+In the above code, we can see that the enclosed variable x value was overwritten by using the 
+keyword 'nonlocal'.
+
+The code below is an overall example of LEGB rule.
+
+x='global x'
+def outer():
+    x='outer x'     # local variable to outer function
+    def inner():
+        x='inner x' # local variable to inner function
+        print(x)
+    inner()
+    print(x)
+outer()
+print(x)
+
+O/P:
+inner x
+outer x
+global x
+
+
+Sorting Lists, Tuples, Dictionaries and Objects:
+Sort vs Sorted() method:
+Sort method will sort the actual list and replace/overwrite the original list with the sorted values.
+Sorted method can be assigned to a variable. This will not affect the original list.
+
+Another difference is, sort method will work only with lists. But sorted method will work with lists, 
+tuples and dictionaries.
+
+num=[8,0,23,-1,100,2,-2,8,20]
+print(num)      # Before sorting
+num.sort()
+print(num)      # After sorting
+
+O/P:
+[8, 0, 23, -1, 100, 2, -2, 8, 20]
+[-2, -1, 0, 2, 8, 8, 20, 23, 100]
+
+
+num=[8,0,23,-1,100,2,-2,8,20]
+print(num)      # Before sorting
+new_num=sorted(num)
+print(num)      # After sorting
+print(new_num)  # Result
+
+O/P:
+[8, 0, 23, -1, 100, 2, -2, 8, 20]
+[8, 0, 23, -1, 100, 2, -2, 8, 20]
+[-2, -1, 0, 2, 8, 8, 20, 23, 100]
+
+
+To sort the list in descending order, we can use the keyword 'reverse=True' in both sort and sorted
+methods.
+
+num=[8,0,23,-1,100,2,-2,8,20]
+num.sort(reverse=True)
+print(num)
+
+O/P:
+[100, 23, 20, 8, 8, 2, 0, -1, -2]
+
+
+num=[8,0,23,-1,100,2,-2,8,20]
+new_num=sorted(num,reverse=True)
+print(new_num)
+
+O/P:
+[100, 23, 20, 8, 8, 2, 0, -1, -2]
+
+
+As mentioned before, sort method will work only with lists. But sorted method will work with lists, 
+tuples and dictionaries. However, the output of a sorted method is always a list.
+
+num=[8,0,23,-1,100,2,-2,8,20]
+tup=(34,5,12,0,-5,100,1)
+dic={'name':'anand','age':28,'city':'chennai'}
+sorted_list=sorted(num)
+sorted_tuple=sorted(tup)
+sorted_dict=sorted(dic)
+print(sorted_list)
+print(sorted_tuple)
+print(sorted_dict)
+
+O/P:
+[-2, -1, 0, 2, 8, 8, 20, 23, 100]
+[-5, 0, 1, 5, 12, 34, 100]
+['age', 'city', 'name']
+
+
+Other than ascending and descending order, we can also use the keyword 'key' as an argument to the
+sorted function and sort the items based on different criteria. For example, the following code
+first converts each list item as an absolute (abs) value and then sort it.
+
+num=[8,0,23,-1,100,2,-2,8,20]
+new_num=sorted(num)
+new_num_abs=sorted(num,key=abs)
+print(new_num)
+print(new_num_abs)
+
+O/P:
+[-2, -1, 0, 2, 8, 8, 20, 23, 100]
+[0, -1, 2, -2, 8, 8, 20, 23, 100]
+
+
+The value we assign for the 'key' in sorted method can be a built-in method or our own custom function.
+
+num=[8,0,23,-1,100,2,-2,8,20]
+
+def test(num):      # This function does not do anything. 
+    return num
+new_num=sorted(num,key=test)
+print(new_num)
+
+O/P:
+[-2, -1, 0, 2, 8, 8, 20, 23, 100]
+
+In the above code, we have used our custom function 'test' as the value for 'key' in sorted method, 
+instead of built-in function. The test function does not do anything. This is just to show an example
+that we can use custom functions as value for 'key' argument in sorted method.
+
+We can also pass the 'reverse' argument, along with 'key' argument in the sorted function.
+
+num=[8,0,23,-1,100,2,-2,8,20]
+def test(num):      # This function does not do anything. 
+    return num
+new_num=sorted(num,key=test, reverse=True)
+print(new_num)
+
+O/P:
+[100, 23, 20, 8, 8, 2, 0, -1, -2]
+
+
+Error Handling : Try/Except
+
+The 'Try' block will be executed first and if there are any errors in the 'Try' block, we can catch 
+that error and use the 'Except' block to execute/print some other code.
+This way, we can print out some clear error messages instead of the long error messages printed out
+by default in Python.
+
+try:
+    with open("testt") as f:
+        pass
+except:
+    print("No such file")
+
+O/P:
+No such file
+
+In the above code, we have a try and except block. In this code, the except block is very generic,
+which means no matter what type of error occurs in the try block, it will execute the same except
+block for all type of errors.
+For example, the following code may have the right file name, but some other error. Python will
+still execute the 'generic' except block.
+
+try:
+    with open("test.py") as f:
+        pass
+    jhkkh
+except:
+    print("No such file")
+
+O/P:
+No such file
+
+In the above code, we have some random characters as part of the try block. But the output is the same.
+
+
+We can target specific errors by specifying the error type as part of the exception code.
+
+try:
+    with open("testt.py") as f:
+        pass    
+except FileNotFoundError:
+    print("No such file")
+
+O/P:
+No such file
+
+The above code has a wrong file name in the try block and since we have specified the particular
+error type in the Except block, it will execute the Except code only for that error type.
+
+For example, the below code has incorrect variable names and since we have no specific except block
+for that error, it will return the default Python error.
+
+try:
+    with open("test.py") as f:
+        pass
+    var1=bad_var
+except FileNotFoundError:
+    print("No such file")
+
+O/P:
+NameError: name 'bad_var' is not defined
+
+But if we have a common except block, then the errors other than the specified errors will execute
+this common except block.
+
+try:
+    with open("test.py") as f:
+        pass
+    var1=bad_var
+except FileNotFoundError:
+    print("No such file")
+except:
+    print("Some other error")
+
+O/P:
+Some other error
+
+And if we have multiple errors in Try block and each error has its own Except errorcode block, then
+it will execute only the exception block of the first error it finds in the Try block.
+The following code has both wrong file name and incorrect variable name. But it will execute the 
+file error exception as it comes first in the code execution.
+
+try:
+    with open("test1.py") as f:
+        pass
+    var1=bad_var
+except FileNotFoundError:
+    print("No such file")
+except NameError:
+    print("Some other error")
+
+O/P:
+No such file
+
+Note: Always code the common exception block at the bottom of specific exceptions. Otherwise, Python
+will throw an error.
+
+try:
+    var1=var2
+    with open("test.py") as f:
+        pass
+except:
+    print("Common exception block")    
+except FileNotFoundError:
+    print("No such file")
+except NameError:
+    print("Some other error")
+
+O/P:
+SyntaxError: default 'except:' must be last
+
+However, instead of simply typing 'except' for generic exception, if we type 'except Exception' in
+the code, Python won't throw an error. The problem is, it will execute the generic 
+'except Exception' block as it is coded first before the specific exceptions.
+
+try:
+    var1=var2
+    with open("test.py") as f:
+        pass
+except Exception:
+    print("Common exception block")    
+except FileNotFoundError:
+    print("No such file")
+except NameError:
+    print("Some other error")
+
+O/P:
+Common exception block
+
+
+Instead of printing different messages for different errros, we can also print a clear error
+message by assigning a variable for each exception and then printing the variable, like shown in
+the code below.
+
+try:
+    with open("test1.py") as f:
+        pass
+except FileNotFoundError as e:
+    print(e)
+
+O/P:
+[Errno 2] No such file or directory: 'test1.py'
+
+
+try:
+    var1=var2
+    with open("test.py") as f:
+        pass
+except FileNotFoundError as e:
+    print(e)
+except NameError as e:
+    print(e)
+
+O/P:
+name 'var2' is not defined
+
+
+
+'Else' with Try/Except:
+
+We can use 'Else' block to execute code, when there are no errors in the Try block.
+
+The code below has an error in the file name, so it will execute the specified exception.
+
+try:
+    f=open("test.atxt")        
+except FileNotFoundError as e:
+    print(e)
+else:
+    print(f.read())
+    f.close()
+
+O/P:
+[Errno 2] No such file or directory: 'test.atxt'
+
+If we remove the error, then there will be no exception. Hence, it will execute the Else block.
+In simple words, if there are errors, it will execute the exception. If there are no errors, it will
+execute the Else block.
+
+try:
+    f=open("test.txt")        
+except FileNotFoundError as e:
+    print(e)
+else:
+    print(f.read())
+    f.close()
+
+O/P:
+Hello There!
+
+
+Finally block:
+
+Unlike 'Else' block which will run only when there are no errors/exceptions, 'Finally' block will
+run no matter what. Even if there are errors/exceptions or no errors/exception, it will always
+execute the 'Finally' block following the Try or Exception or Else block.
+
+try:
+    f=open("tesst.txt")        
+except FileNotFoundError as e:
+    print(e)
+else:
+    print(f.read())
+    f.close()
+finally:
+    print("Code execution completed")
+
+O/P:
+[Errno 2] No such file or directory: 'tesst.txt'
+Code execution completed
+
+
+try:
+    f=open("test.txt")        
+except FileNotFoundError as e:
+    print(e)
+else:
+    print(f.read())
+    f.close()
+finally:
+    print("Code execution completed")
+
+O/P:
+Hello There!
+Code execution completed
+
+
+Another good example is, we may want to place our file closing code in the 'Finally' block. So
+even if the code was successful or not, it will close the file at the end of code execution.
+
+
+try:
+    f=open("test.txt")        
+except FileNotFoundError as e:
+    print(e)
+else:
+    print(f.read())
+finally:
+    f.close()
+    print("File closed")
+
+O/P:
+Hello There!
+File closed
+
+
+Raising Exceptions:
+We can also raise exceptions manaually, when required.
+
+try:
+    f=open("test.txt")
+    if f.name=='test.txt':
+        raise Exception         # Manually raising the exception
+except FileNotFoundError as e:
+    print(e)
+except Exception:
+    print("Please consider using a different file name")
+else:
+    print(f.read())
+finally:
+    f.close()
+    print("File closed")
+
+O/P:
+Please consider using a different file name
+File closed
+
+
+
+Classes:
+Classes allow us to logically group our data and modules, so we can reuse them and it is easy to 
+build upon them if needed.
+Data and functions within classses are called as attributes and methods.
+Method - A function that is associated with the class.
+Attribute - Data that is associated with aq class
+
+We can also describe classes as blueprints.
+
+Class instances - Class is basically a blueprint to create instances.
+
+
+class Employee:
+    pass
+emp1=Employee()     # Class instance 1
+emp2=Employee()     # Class instance 2
+print(emp1)
+print(emp2)
+
+O/P:
+<__main__.Employee object at 0x009BADD0>
+<__main__.Employee object at 0x009BFD90>
+
+In the above code, the output shows the memory location of class instances emp1 and emp2. This means
+that each class instance is different and unique on its own and it has its own memory location.
+In short, class instances (instance variables) contain data that are unique to each instances.
+
+
+class Employee:
+    pass
+emp1=Employee()     # Class instance 1
+emp2=Employee()     # Class instance 2
+
+# We can assign different attributes/data to each class instances
+emp1.name='Anand'
+emp1.age=28
+emp1.city='Chennai'
+
+emp2.name='Kumar'
+emp2.email='test@test.com'
+print(emp1.name)
+print(emp2.email)
+
+O/P:
+Anand
+test@test.com
+
+In the code above, we have created different attributes for each instances and we are able to
+access them individually.
+
+When we create a method within a class, it recieves the instance as the first variable. 
+By convention, we can use the keyword 'self' to denote the instance.
+
+
+In the code above, we have a lot of code which basically sets up values for class instance attributes.
+As mentioned before, classes are blueprints to create instances. The following code will show how
+simply we can create classes, class instances, pass arguments and use classes as blueprints.
+
+
+class Employee:
+    def __init__(self,fname,lname,age):
+        self.fname=fname
+        self.lname=lname
+        self.age=age
+        self.email=fname+'.'+lname+'@company.com'
+emp1=Employee('Anand','Kumar',28)
+emp2=Employee('Test','User',None)
+print(emp1.email)
+print(emp2.email)
+
+O/P:
+Anand.Kumar@company.com
+Test.User@company.com
+
+As mentioned earlier, methods within classes will take the class instance variable as the first
+argument automatically by default. So, we don't have to pass the class variable as argument 1 
+manually, when we create class instance variables.
+
+During each class instance variable creation, the keyword 'self' within the class method will be
+replaced by the class variable name such as emp1 and emp2 during execution.
+
+
+Let's say we want to print out the fullname of each employee. This can be done as shown in the code below.
+
+print('{} {}'.format(emp1.fname,emp1.lname))
+print('{} {}'.format(emp2.fname,emp2.lname))
+
+O/P:
+Anand Kumar
+Test User
+
+But the problem with this code is, we have to write this print statement for all of our class 
+instance variables. This can be avoided by creating a method within our class and using it as a 
+blue print to return full names.
+
+class Employee:
+    def __init__(self,fname,lname,age):
+        self.fname=fname
+        self.lname=lname
+        self.age=age
+        self.email=fname+'.'+lname+'@company.com'
+    def fullname(self):
+        return '{} {}'.format(self.fname,self.lname)
+
+emp1=Employee('Anand','Kumar',28)
+emp2=Employee('Test','User',None)
+print(emp1.email)
+print(emp2.email)
+print(emp1.fullname())
+print(emp2.fullname())
+
+O/P:
+Anand.Kumar@company.com
+Test.User@company.com
+Anand Kumar
+Test User
+
+As mentioned before, class instance will be the first argument (self) for class methods. Hence, we
+passed 'self' as the first argument in our fullname() method. We also used emp1.fullname() in the
+print statement because it is a method and used emp1.email as it is an attribute.
+
+If we don't pass the instance/self as the first argument to our class methods, then we will get 
+an error.
+
+class Employee:
+    def __init__(self,fname,lname,age):
+        self.fname=fname
+        self.lname=lname
+        self.age=age
+        self.email=fname+'.'+lname+'@company.com'
+    def fullname():
+        return '{} {}'.format(fname,lname)
+emp1=Employee('Anand','Kumar',28)
+emp2=Employee('Test','User',None)
+print(emp1.fullname())
+
+O/P:
+TypeError: fullname() takes 0 positional arguments but 1 was given
+
+Though we didn't pass any arguments to the fullname() method, the class instance (self) is passed
+as the first argument by default. That is the reason the error message says 1 arg was given.
+
+
+We can also invoke our class methods with the class name directly, as shown below.
+
+class Employee:
+    def __init__(self,fname,lname,age):
+        self.fname=fname
+        self.lname=lname
+        self.age=age
+        self.email=fname+'.'+lname+'@company.com'
+    def fullname(self):
+        return '{} {}'.format(self.fname,self.lname)
+emp1=Employee('Anand','Kumar',28)
+emp2=Employee('Test','User',None)
+print(Employee.fullname(emp1))      # Invoking class methods with Class name directly
+print(emp2.fullname())              # Invoking class methods with class instance variable name
+
+O/P:
+Anand Kumar
+Test User
+
+When we invoke our class methods using class instance variables such as emp1 and emp2, in the form
+of emp1.fullname() , we don't have to pass the instance/instance variable name manaually, as the
+instance variable is automatically passed as 'self' by default.
+However, if we are going to invoke our class methods directly by class name, such as 
+Employee.fullname(emp1), then we must pass the instance variable emp1 or emp2 as the argument. 
+Otherwise, it won't work.
+
+
